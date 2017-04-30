@@ -12,10 +12,12 @@ search_words = {'พร้อมส่ง','Pre','฿','DM','Line','ส่งฟ
 review_words = {}
 
 # fname = 'data/stream__howtoperfect.json'
-fname = 'dataOld/stream_#howtoperfect.json'
+fol_name = 'data'
+fname = 'stream_#howtoperfect'
+ftype = '.json'
+fullPath = fol_name+ '/' + fname + ftype
+
 saler_counter = 0
-
-
 
 book = xlwt.Workbook(encoding="utf-8")
 sheet1 = book.add_sheet("Sheet 1")
@@ -23,7 +25,7 @@ sheet1 = book.add_sheet("Sheet 1")
 sheet1.write(saler_counter, 0, "text")
 sheet1.write(saler_counter, 1, "fav_count")
 sheet1.write(saler_counter, 2, "retweet_count")
-with open(fname, 'r') as f:
+with open(fullPath, 'r') as f:
 	# count_all = Counter()
 	for line in f:
 		# isFound = False
@@ -60,7 +62,7 @@ with open(fname, 'r') as f:
 		sheet1.write(saler_counter, 2, retweet_count)
 
 	print saler_counter
-	book.save("trial2.xls")
+	book.save(fname + ".xls")
 	        # terms_all = [term for term in tweet['text']]
 
 	        # for term in tweet['text']:

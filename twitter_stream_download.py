@@ -15,6 +15,9 @@ import argparse
 import string
 import config
 import json
+import os
+
+import re
 
 def get_parser():
     """Get parser for command line arguments."""
@@ -92,29 +95,19 @@ if __name__ == '__main__':
     auth.set_access_token(config.access_token, config.access_secret)
     api = tweepy.API(auth)
 
-    # max_tweets = 2
-    # statuses = tweepy.Cursor(api.search, q= args.query , since="2017-04-25", until="2017-04-30").items(max_tweets )
-    # data = [s.text.encode('utf8') for s in statuses]
-    # outfile = "%s/stream_%s.json" % (args.data_dir, args.query)
-    # with open(outfile, 'a') as f:
-    #     f.write(json.dumps(data))
+    if not os.path.exists(args.data_dir):
+        os.makedirs(args.data_dir)
 
-    max_tweets = 2000
+    max_tweets = 3000
     outfile = "%s/stream_%s.json" % (args.data_dir, args.query)
     with open(outfile, 'w') as f:
-        for tweet in tweepy.Cursor(api.search, q= args.query , since="2017-04-25", until="2017-04-30").items(max_tweets):
+        for tweet in tweepy.Cursor(api.search, q= args.query , since="2017-04-16").items(max_tweets):
             outfile = "%s/stream_%s.json" % (args.data_dir, args.query)
             # print(tweet)
-            tweet=json.dumps(tweet._json) 
+            tweet=json.dumps(tweet._json)
+            # tweet=json.dumps(tweet._json, indent=4).encode('utf-8')
             f.write(tweet+'\n')
             print tweet
-        # try:
-        #     with open(outfile, 'a') as f:
-        #         tweet=json.dumps(tweet._json) 
-        #         f.write(tweet)
-        # except BaseException as e:
-        #     print("Error on_data: %s" % str(e))
-        #     time.sleep(5)
 
     # twitter_stream = Stream(auth, MyListener(args.data_dir, args.query))
     # twitter_stream.filter(track=[args.query])
